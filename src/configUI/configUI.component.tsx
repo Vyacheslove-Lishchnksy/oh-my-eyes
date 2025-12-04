@@ -1,13 +1,14 @@
 import { useConfigStore } from "../store/store";
 import styles from "./configUI.module.css";
 import { useEffect, useRef, useState } from "react";
-import { defaultConfig } from "../configApp/defaultConfig";
+import { defaultConfig, defaultNode } from "../configApp/defaultConfig";
 import type { replaceConfig } from "../configApp/types";
 
 const ConfigUI = () => {
   const config = useConfigStore((state) => state.currentConfig);
   const setConfig = useConfigStore((state) => state.set);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const cursorRef = useRef<number>(0);
 
   const [isSaveLoading, setIsSaveLoading] = useState(false);
 
@@ -27,8 +28,16 @@ const ConfigUI = () => {
     setTextareaValue(JSON.stringify(config, null, 2));
   }, [config]);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.selectionStart = cursorRef.current;
+      textareaRef.current.selectionEnd = cursorRef.current;
+    }
+  }, [textareaValue]);
+
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = event.target.value;
+    cursorRef.current = event.target.selectionStart;
     setTextareaValue(newValue);
 
     try {
@@ -43,7 +52,18 @@ const ConfigUI = () => {
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
         <button
-          className={styles.saveButton}
+          className={styles.button}
+          onClick={() => {
+            const newConfig = [...config];
+
+            newConfig.push({ ...defaultNode });
+            setConfig(newConfig);
+          }}
+        >
+          Add button
+        </button>
+        <button
+          className={styles.button}
           onClick={() => {
             setIsSaveLoading(true);
             setTimeout(() => {

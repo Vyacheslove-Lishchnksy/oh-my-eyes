@@ -6,10 +6,10 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "public/logoOME.png",
-      "32": "public/logoOME.png",
-      "48": "public/logoOME.png",
-      "128": "public/logoOME.png"
+      "16": "logoOME.png",
+      "32": "logoOME.png",
+      "48": "logoOME.png",
+      "128": "logoOME.png"
     }
   },
   "permissions": ["activeTab", "storage"],
