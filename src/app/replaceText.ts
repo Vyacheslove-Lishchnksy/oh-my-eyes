@@ -1,18 +1,22 @@
 import type { configNode, replaceConfig } from "../configApp/types";
 
 export function replaceTextInTextNodes(
-  node: any,
+  node: Node,
   regex: RegExp,
-  replacement: string
+  replacement: string,
 ) {
+  if (node === null) {
+    return;
+  }
+
   if (node.nodeType === 3) {
-    if (node.nodeValue.trim().length > 0) {
+    if (node.nodeValue && node.nodeValue.trim().length > 0) {
       node.nodeValue = node.nodeValue.replace(regex, replacement);
     }
   }
 
   if (node.nodeType === 1) {
-    const tagName = node.tagName.toLowerCase();
+    const tagName = (node as Element).tagName.toLowerCase();
     if (
       tagName === "script" ||
       tagName === "style" ||
@@ -50,7 +54,7 @@ export const replaceTextByRules = (config: replaceConfig) => {
     replaceTextInTextNodes(
       document.body,
       new RegExp(node.text, node.isIgnoreCase ? "gi" : "g"),
-      replacement
+      replacement,
     );
   });
 };

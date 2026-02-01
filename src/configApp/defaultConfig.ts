@@ -1,6 +1,7 @@
 import type { configNode, replaceConfig } from "./types";
 
-export const defaultConfig: replaceConfig = [];
+export const defaultConfig: replaceConfig = [
+];
 
 export const defaultNode: configNode = {
   text: "text that you want to replace",
